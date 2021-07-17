@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  Configuración para usar log4j -->
+<Configuration status="WARN" >
+    <Appenders>
+        <Console name="LogToConsole" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+            <ThresholdFilter level="WARN"/>
+        </Console>
+        
+		<RollingFile
+		    name="LogToFile"
+		    fileName="c:/log/manolito-logger.log"
+		    filePattern="c:/log/logs/$${date:yyyy-MM}/manolito-logger-%d{-dd-MMMM-yyyy}-%i.log"
+		    ignoreExceptions="false">
+		    <PatternLayout>
+		        <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</Pattern>
+		    </PatternLayout>
+		    <Policies>
+		         <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy
+                    size="10 MB" />
+                <TimeBasedTriggeringPolicy />
+		    </Policies>
+		    <DefaultRolloverStrategy max="5" />
+		    <ThresholdFilter level="ERROR"/>
+		</RollingFile>
+    </Appenders>
+    <Loggers>    
+        
+        <Logger name="atos.manolito" level="ERROR" additivity="false">            
+            <AppenderRef ref="LogToFile"/>
+        </Logger>
+        <Logger name="org.springframework.boot" level="ERROR" additivity="false">
+        	<AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Logger>
+        <Root level="DEBUG">
+            <AppenderRef ref="LogToFile"/>
+            <AppenderRef ref="LogToConsole"/>
+        </Root>  
+        
+    </Loggers>
+</Configuration>
